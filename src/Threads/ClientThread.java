@@ -39,7 +39,6 @@ public class ClientThread extends Thread
     ClientThread[] arrayClientSocket   =   null;
     static ArrayList<Friend> chat_user_list = new ArrayList<Friend>();
     private int idThread;
-    //private String nameUser;
     private Friend friend;
     ObjectInputStream reader;
     ObjectOutputStream writer;
@@ -48,7 +47,6 @@ public class ClientThread extends Thread
     {
         this.socket     =   socket;
         this.idThread   =   idThread;
-        //this.nameUser   =   "default name #"+idThread;
         this.friend =   FriendWrap.getInstance(this.idThread,"default name #"+idThread, USER_CLIENT_STATUS_ONLINE);
         chat_user_list.add(this.friend);
         this.arrayClientSocket  =  arrayClientSocket;
@@ -57,12 +55,8 @@ public class ClientThread extends Thread
     }
     public void sendMessage(ObjectExchange messageObject)  throws IOException
     {
-            writer.writeObject(messageObject);
-            writer.flush();
-    }
-    public void newFriendConnected()
-    {
-
+        writer.writeObject(messageObject);
+        writer.flush();
     }
     public void run()
     {
@@ -76,10 +70,7 @@ public class ClientThread extends Thread
             reader = new ObjectInputStream (new BufferedInputStream(socket.getInputStream()));
             // Если не Нужный тип пришел, вылетит исключение
             ObjectExchange data;
-
-
             System.out.println(chat_user_list.toString());
-
             Gson gson   =   new Gson();
             String client;
             while (!end_session && (data = (ObjectExchange) reader.readObject())!= null){
@@ -111,10 +102,7 @@ public class ClientThread extends Thread
                             }
                         break;
 
-
-
                         case MESSAGE_FOR_FRIEND_RECEIVE:
-
                             synchronized (this)
                             {
                                 if (arrayClientSocket[data.friend_id]!=null)
@@ -125,7 +113,6 @@ public class ClientThread extends Thread
                                 }
                                 sendMessage(new ObjectExchangeWrap(MESSAGE_RECEIVE,  null, idThread).getObjectExchange());
                             }
-
                         break;
 
                         case MESSAGE_FOR_ALL_FRIENDS_RECEIVE:
@@ -153,7 +140,6 @@ public class ClientThread extends Thread
                             System.out.println("Multicast message"+data.message);
                             break;
 
-
                         case CLIENT_CHANGE_STATUS:
                             friend.status = gson.fromJson(data.message, byte.class);
                             client= gson.toJson(friend);
@@ -163,7 +149,6 @@ public class ClientThread extends Thread
                                 {
                                     ClientThread  friendTread =   arrayClientSocket[i];
                                     friendTread.sendMessage(new ObjectExchangeWrap(SEND_NEW_FRIEND_STATUS,client, idThread).getObjectExchange());
-
                                 }
                             }
                             break;
@@ -176,7 +161,6 @@ public class ClientThread extends Thread
                                 {
                                     ClientThread  friendTread =   arrayClientSocket[i];
                                     friendTread.sendMessage(new ObjectExchangeWrap(SEND_FRIEND_CHANGE_NICK,client, idThread).getObjectExchange());
-
                                 }
                             }
                             break;
@@ -192,25 +176,20 @@ public class ClientThread extends Thread
                                 {
                                     ClientThread  friendTread =   arrayClientSocket[i];
                                     friendTread.sendMessage(new ObjectExchangeWrap(SEND_NEW_FRIEND_STATUS, client, idThread).getObjectExchange());
-
                                 }
                             }
                             end_session =   true;
                             break;
 
-
                         default:
                             System.out.println("default Multicast message"+data.message);
                             System.out.println("default Multicast message"+data.message_code);
-
                     }
 
                 System.out.println("Received message " +idThread + ":" + data.message);
                 System.out.println("Received code " +idThread + ":" + data.message_code);
 
             }
-
-
             System.out.println("Client socket close success");
         }
         catch (Exception e)
@@ -236,8 +215,6 @@ public class ClientThread extends Thread
                 System.out.println("finally error");
                 e.printStackTrace();
             }
-
-
         }
     }
 }
