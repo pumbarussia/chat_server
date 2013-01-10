@@ -80,8 +80,7 @@ public class ClientThread extends Thread
                             break;
 
                         case CLIENT_CONNECT:
-                            //TODO Обращение к базе получает Пользователя
-                            //TODO Возможно работать с неавторизованой сессией
+
                             synchronized (this)
                             {
                                 sendMessage(new ObjectExchangeWrap(SEND_CLIENT_ID, null, idThread).getObjectExchange());
@@ -96,9 +95,7 @@ public class ClientThread extends Thread
 
                                     }
                                 }
-                                //sendMessage(new ObjectExchangeWrap(SEND_FRIENDS_LIST, null, idThread).getObjectExchange());
                                 System.out.println("Client connected :"+idThread);
-                                //TODO взять друзей список тех кто в сети, точнее не офлайн, уведомить что пришел новый чел
                             }
                         break;
 
@@ -125,7 +122,6 @@ public class ClientThread extends Thread
                                     {
                                         ClientThread  friendTread =   arrayClientSocket[i];
                                         friendTread.sendMessage(new ObjectExchangeWrap(MESSAGE_FOR_ALL_FRIENDS_FOR_SEND,  data.message, idThread).getObjectExchange());
-
                                     }
                                 }
                                 sendMessage(new ObjectExchangeWrap(MESSAGE_RECEIVE,  null, idThread).getObjectExchange());
@@ -204,7 +200,6 @@ public class ClientThread extends Thread
                     arrayClientSocket[idThread] =   null;
                     System.out.println("Disconnected " +idThread );
                 }
-                chat_user_list.remove(this.friend);
                 reader.close();
                 writer.close();
                 socket.close();
