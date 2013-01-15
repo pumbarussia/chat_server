@@ -88,11 +88,26 @@ public class SocketTransport
                 //this.closeSocket();
                 System.out.println("Error wait connection");
                 //e.printStackTrace();
-
             }
 
         }
         this.closeSocket();
         System.out.println("Wait connection cycle close");
+    }
+    private synchronized void shutdownServer() throws IOException {
+        // обрабатываем список рабочих коннектов, закрываем каждый
+        for(int i=0;i< arrayClientSocket.length; i++)
+        {
+            if ((arrayClientSocket[i]!=null))
+            {
+                arrayClientSocket[i].getSocket().close();
+            }
+        }
+
+        if (!serverSocket.isClosed()) {
+            try {
+                serverSocket.close();
+            } catch (IOException ignored) {}
+        }
     }
 }

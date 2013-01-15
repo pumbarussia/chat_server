@@ -53,6 +53,12 @@ public class ClientThread extends Thread
 
         System.out.println("ClientThread constructed success");
     }
+    public Socket getSocket()
+    {
+        return  socket;
+    }
+
+
     public void sendMessage(ObjectExchange messageObject)  throws IOException
     {
         writer.writeObject(messageObject);
