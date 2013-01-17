@@ -88,17 +88,21 @@ public class ClientThread extends Thread
                         case CLIENT_CONNECT:
 
                             synchronized (this)
-                            {
+                            {   System.out.println("its status :"+data.friend_id);
                                 sendMessage(new ObjectExchangeWrap(SEND_CLIENT_ID, null, idThread).getObjectExchange());
                                 friend.status   =  USER_CLIENT_STATUS_ONLINE;
                                 client= gson.toJson(friend);
-                                for(int i=0;i< arrayClientSocket.length; i++)
+                                System.out.println("its status :"+data.friend_id);
+                                if(data.friend_id != 1)               //INVISIBLE_STATUS
                                 {
-                                    if ((arrayClientSocket[i]!=null)&&(i!=idThread))
+                                    for(int i=0;i< arrayClientSocket.length; i++)
                                     {
-                                        ClientThread  friendTread =   arrayClientSocket[i];
-                                        friendTread.sendMessage(new ObjectExchangeWrap(SEND_NEW_FRIEND_STATUS, client, idThread).getObjectExchange());
+                                        if ((arrayClientSocket[i]!=null)&&(i!=idThread))
+                                        {
+                                            ClientThread  friendTread =   arrayClientSocket[i];
+                                            friendTread.sendMessage(new ObjectExchangeWrap(SEND_NEW_FRIEND_STATUS, client, idThread).getObjectExchange());
 
+                                        }
                                     }
                                 }
                                 System.out.println("Client connected :"+idThread);
