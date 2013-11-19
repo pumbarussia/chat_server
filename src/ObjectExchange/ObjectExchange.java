@@ -7,10 +7,11 @@ package ObjectExchange;
  * Time: 16:34
  * To change this template use File | Settings | File Templates.
  */
-import  java.io.Serializable;
-public class ObjectExchange implements Serializable
-{
+
+import java.io.Serializable;
+
+public class ObjectExchange implements Serializable {
     public int friend_id;
-    public int message_code;
+    public int messageCode;
     public String message;
 }

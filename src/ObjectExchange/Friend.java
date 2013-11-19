@@ -8,9 +8,8 @@ package ObjectExchange;
  * To change this template use File | Settings | File Templates.
  */
 
-public class Friend
-{
+public class Friend {
     public int uid;
-    public String nick_name;
+    public String nickName;
     public byte status;
 }
